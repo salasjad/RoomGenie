@@ -1,0 +1,133 @@
+
+#include <SPI.h>
+#include <Ethernet.h>
+
+int ledPin1 = 6; // Red LED for FlameDetector sensor
+int ledPin2 = 7; // Blue LED for PIR sensor
+int PIR_sensor = 3;
+int Flame_Detector_sensor = 2;
+
+byte mac[] = { 0xDE, 0xAD, 0xBE, 0xEF, 0xFE, 0xED };
+IPAddress server(158, 36, 70, 36);
+IPAddress ip(192, 168, 1, 1);
+EthernetClient client;
+
+/*******************************************SETUP***********************************************/
+
+void setup(){
+  Serial.begin(9600);
+  pinMode(ledPin1, OUTPUT);
+  pinMode(ledPin2, OUTPUT);
+
+  if (Ethernet.begin(mac) == 0) {
+    Serial.println("Failed to configure Ethernet using DHCP");
+    Ethernet.begin(mac, ip);
+  }
+  delay(500);
+  Serial.println("connecting...");
+}
+
+/****************************************END SETUP**********************************************/
+/******************************************LOOP*************************************************/
+
+void loop(){
+  PIR_sensor = digitalRead(A0); // From analog to digital (0 and 1)
+  Flame_Detector_sensor = analogRead(A1); // Reads analog
+
+  int 
+  static long start1 = 0;
+  static long start2 = 0;
+  static int timer = 1000;
+
+  if (Flame_Detector_sensor <= 195 && millis() - start1 > timer) {
+    start1 = millis(); // start1 counter
+    digitalWrite(ledPin1, HIGH); // Active blue LED.
+  } 
+  else if (Flame_Detector_sensor >= 230) {
+    digitalWrite(ledPin1, LOW); // Unactive blue LED.
+  }
+
+  // If PIR is equal to 1 and it has gone 1, start clock counter, and set activate blue led.
+  if (PIR_sensor == 1 && millis() - start2 > timer) {
+    start2 = millis(); // start2 counter
+    digitalWrite(ledPin2, HIGH); // Active red LED.
+  } 
+  else if (PIR_sensor == 0) {
+    digitalWrite(ledPin2, LOW); // Unactive blue LED.
+  }
+
+  // If the start1 timer is less than start2 timer, and start1 counter is active.
+  if ( PIR_sensor == 1 && start1 < start2 && start1 > 0) {
+    Serial.print("| ");
+    Serial.print("Velkommen");
+    Serial.print("\t");
+    Serial.print(start1);
+    Serial.print("\t");
+    Serial.print(start2);
+    Serial.print("\t");
+    Serial.print(PIR_sensor);
+    Serial.print("\t");
+    Serial.print(Flame_Detector_sensor);
+    Serial.print(" |");
+    Serial.println();
+    start1 = 0;
+    start2 = 0;
+
+  }
+  
+  if (PIR_sensor == 1 && start1 > start2 && start2 > 0) {
+    Serial.print("| ");
+    Serial.print("Hadebra");
+    Serial.print("\t");
+    Serial.print(start1);
+    Serial.print("\t");
+    Serial.print(start2);
+    Serial.print("\t");
+    Serial.print(PIR_sensor);
+    Serial.print("\t");
+    Serial.print(Flame_Detector_sensor);
+    Serial.print(" |");
+    Serial.println();
+    // end table
+    start1 = 0;
+    start2 = 0;
+  }
+  delay(100); // Wait 100/1000 = 0.1 sec.
+
+  if (client.available()) {
+    char c = client.read();
+    Serial.print(c);
+  }
+
+  if (!client.connected()) {   // if the server's disconnected, stop the client:
+    Serial.println();
+    Serial.println("disconnecting.");
+    client.stop();
+  }
+}
+
+/***************************************** END LOOP***********************************************/
+
+/*************************************ETHERNET CONNECTION*****************************************/
+
+void connect() {
+  // if you get a connection, report back via serial:
+  client.connect(server, 80);
+  Serial.println("CONNECTED");
+  delay(1000);
+}
+
+void send(int value) {
+  // Make a HTTP request:
+  client.print("GET /arduino.php?rom=D201");
+  client.print("&count=");
+  client.print(value);
+  client.println(" HTTP/1.0");
+  client.println("Host: 158.36.70.36");
+  client.println("Connection: close");
+  client.println();
+  Serial.print("Sending value");
+  Serial.println(value);
+}
+
+/*******************************END OF ETHERNET CONNECTION*****************************************/
