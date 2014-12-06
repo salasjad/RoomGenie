@@ -49,8 +49,6 @@ int Flame_Detector_sensor2;
 
     start1 = millis(); // start1 counter 
   
-     
-
   } 
 
 
@@ -161,9 +159,9 @@ void connect() {
   Serial.println("CONNECTED");
 }
 
-void send(int value) {
+void send(int value) { 
   // Make a HTTP request:
-  client.print("GET /arduino.php?rom=D201");
+  client.print("GET /arduino.php?rom=D201"); //158.36.70.36
   client.print("&count=");
   client.print(value);
   client.println(" HTTP/1.0");
