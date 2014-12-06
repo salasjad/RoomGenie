@@ -64,7 +64,7 @@ int Flame_Detector_sensor2;
     pCount++;
    
   Serial.print(" [ ");  
-  Serial.print("Velkommen");
+  Serial.print("Velkommen"); //Welcome
   Serial.print(" (");
   Serial.print(pCount);
   Serial.print(")");  
@@ -97,7 +97,7 @@ int Flame_Detector_sensor2;
     pCount--;
  
     Serial.print(" [ ");
-    Serial.print("Hadebra"); 
+    Serial.print("Hadebra"); //Good bye
     Serial.print(" (");
     Serial.print(pCount);
     Serial.print(")");
