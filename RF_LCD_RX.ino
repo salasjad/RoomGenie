@@ -87,20 +87,3 @@ void RFsetup(){
   vw_setup(4000);  // Bits per sec
   vw_rx_start();  // Start the receiver PLL running
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
