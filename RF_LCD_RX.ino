@@ -1,5 +1,4 @@
 
-// include the library code:
 #include <LiquidCrystal.h>
 #include <VirtualWire.h>
 
