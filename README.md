@@ -1,12 +1,17 @@
 RoomGenie
-=========
-Engineers:
-- Salahuddin Asjad
-- Dler Hasan
-- Andreas Blakstad
-- Ola Aasheim
+==========
 
-This is a school project we are working on. The end result will be a door counter, that will keep track of how many people there are in one room. The stats will be syncronized with a database. 
+Keep track of amount of people inside a room. We have implemented sensors over every door. 
+You can then watch a list of table from a website in real-time.
 
-Visit our website to read our blog (158.36.70.36).
-
+Componentlist:
+- Arduino Uno (with the sensors)
+- PIR sensor
+- Ultrasonic sensor
+- Android Nano (with the LCD screen)
+- LCD screen
+- male/male jumper wires
+- male/female jumper wires
+- RF transmitter 315MHz
+- RF receiver 315MHz
+- HanRun Ethernet shield
