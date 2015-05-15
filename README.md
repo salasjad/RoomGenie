@@ -1,7 +1,7 @@
 RoomGenie
 ==========
 
-Keep track of amount of people inside a room. We have implemented sensors over every door. 
+Keep track of amount of people inside a room. Implement the sensors over your door. 
 You can then watch a list of table from a website in real-time.
 
 Componentlist:
